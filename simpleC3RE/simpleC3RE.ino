@@ -43,13 +43,14 @@ void loop() {
 
   // For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
 
-  for(int i=0;i<NUMPIXELS;i++){
+ 
+    for(int i=0;i<NUMPIXELS;i++){
 
     // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
-    pixels1.setPixelColor(i, pixels1.Color(0,150,0)); // Moderately bright green color.
-    pixels2.setPixelColor(i, pixels1.Color(0,150,0));
-    pixels3.setPixelColor(i, pixels1.Color(0,150,0));
-    pixels4.setPixelColor(i, pixels1.Color(0,150,0));
+    pixels1.setPixelColor(i, pixels1.Color(150,0,0)); // Moderately bright green color.
+    pixels2.setPixelColor(i, pixels1.Color(0,0,150));
+    pixels3.setPixelColor(i, pixels1.Color(150,0,0));
+    pixels4.setPixelColor(i, pixels1.Color(0,0,150));
     
     pixels1.show(); // This sends the updated pixel color to the hardware.
     pixels2.show();
@@ -59,8 +60,46 @@ void loop() {
     delay(delayval); // Delay for a period of time (in milliseconds).
   }
     theaterChase(pixels4.Color(0, 0, 127), 100); // Blue
-    
+    theaterChase(pixels4.Color(0, 127, 0), 100); // Green
+
+    rainbow(20);
+
 }
+
+void rainbow(uint8_t wait) {
+  uint16_t i, j;
+
+  for(j=0; j<256; j++) {
+    for(i=0; i<pixels1.numPixels(); i++) {
+      pixels1.setPixelColor(i, Wheel((i+j) & 255));
+       pixels2.setPixelColor(i, Wheel((i+j) & 255));
+        pixels3.setPixelColor(i, Wheel((i+j) & 255));
+         pixels4.setPixelColor(i, Wheel((i+j) & 255));
+    }
+    pixels1.show();
+    pixels2.show();
+    pixels3.show();
+    pixels4.show();
+    
+    delay(wait);
+  }
+}
+
+// Input a value 0 to 255 to get a color value.
+// The colours are a transition r - g - b - back to r.
+uint32_t Wheel(byte WheelPos) {
+  WheelPos = 255 - WheelPos;
+  if(WheelPos < 85) {
+    return pixels1.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  }
+  if(WheelPos < 170) {
+    WheelPos -= 85;
+    return pixels1.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+  WheelPos -= 170;
+  return pixels1.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+}
+
 //Theatre-style crawling lights.
 void theaterChase(uint32_t c, uint8_t wait) {
   for (int j=0; j<10; j++) {  //do 10 cycles of chasing
