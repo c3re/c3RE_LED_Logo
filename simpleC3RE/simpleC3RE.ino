@@ -59,17 +59,34 @@ void loop() {
 
     delay(delayval); // Delay for a period of time (in milliseconds).
   }
-    theaterChase(pixels4.Color(0, 0, 127), 100); // Blue
-    theaterChase(pixels4.Color(0, 127, 0), 100); // Green
+  //  theaterChase(pixels4.Color(0, 0, 127), 100); // Blue
+   // theaterChase(pixels4.Color(0, 127, 0), 100); // Green
 
-    rainbow(20);
+    rainbow1(20);
+    rainbow2(20);
+
+    for(int i=0;i<NUMPIXELS;i++){
+
+    // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+    pixels1.setPixelColor(i, pixels1.Color(0,150,0)); // Moderately bright green color.
+    pixels2.setPixelColor(i, pixels1.Color(150,0,150));
+    pixels3.setPixelColor(i, pixels1.Color(0,150,0));
+    pixels4.setPixelColor(i, pixels1.Color(150,0,150));
+    
+    pixels1.show(); // This sends the updated pixel color to the hardware.
+    pixels2.show();
+    pixels3.show();
+    pixels4.show();
+
+    delay(delayval); // Delay for a period of time (in milliseconds).
+  }
 
 }
 
-void rainbow(uint8_t wait) {
+void rainbow1(uint8_t wait) {
   uint16_t i, j;
 
-  for(j=0; j<256; j++) {
+  for(j=0; j<169; j++) {
     for(i=0; i<pixels1.numPixels(); i++) {
       pixels1.setPixelColor(i, Wheel((i+j) & 255));
        pixels2.setPixelColor(i, Wheel((i+j) & 255));
@@ -77,8 +94,27 @@ void rainbow(uint8_t wait) {
          pixels4.setPixelColor(i, Wheel((i+j) & 255));
     }
     pixels1.show();
-    pixels2.show();
+  //  pixels2.show();
     pixels3.show();
+  //  pixels4.show();
+    
+    delay(wait);
+  }
+}
+
+void rainbow2(uint8_t wait) {
+  uint16_t i, j;
+
+  for(j=0; j<169; j++) {
+    for(i=0; i<pixels1.numPixels(); i++) {
+      pixels1.setPixelColor(i, Wheel((i+j) & 255));
+       pixels2.setPixelColor(i, Wheel((i+j) & 255));
+        pixels3.setPixelColor(i, Wheel((i+j) & 255));
+         pixels4.setPixelColor(i, Wheel((i+j) & 255));
+    }
+  //  pixels1.show();
+    pixels2.show();
+   // pixels3.show();
     pixels4.show();
     
     delay(wait);
